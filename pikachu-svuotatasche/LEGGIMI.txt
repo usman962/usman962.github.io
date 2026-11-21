@@ -1,0 +1,16 @@
+SVUOTA TASCHE PIKACHU - file per stampa 3D
+==========================================
+Ingombro: 188 x 106 x 22 mm (vassoio 180 x 88 mm, parete 4 mm, fondo 3 mm)
+
+svuotatasche_pikachu.3mf        -> multicolore (AMS / MMU): 1 oggetto, 3 parti
+svuotatasche_pikachu_giallo.stl -> corpo + base orecchie
+svuotatasche_pikachu_nero.stl   -> punte orecchie, occhi, bocca
+svuotatasche_pikachu_rosso.stl  -> guance
+svuotatasche_pikachu_unico.stl  -> tutto in un pezzo (stampa monocolore)
+
+Multicolore con STL: importa i 3 STL insieme e rispondi "Si" alla domanda
+"caricare come oggetto singolo con piu' parti?", poi assegna i filamenti.
+La faccia e' intarsiata a filo nel fondo (0,8 mm = 4 layer da 0,2).
+
+Impostazioni consigliate: PLA, layer 0,2 mm, 3 perimetri, infill 15%,
+nessun supporto, fondo appoggiato sul piatto.
