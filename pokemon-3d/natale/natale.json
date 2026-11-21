@@ -1,0 +1,181 @@
+{
+ "fiocco_neve": {
+  "nome": "Fiocco di neve",
+  "ingombro": [
+   76,
+   95,
+   3
+  ],
+  "grammi": 4,
+  "colori": [
+   "bianco",
+   "ghiaccio"
+  ],
+  "pezzi_unico": 1,
+  "status": {
+   "bianco": [
+    "NoError",
+    1
+   ],
+   "ghiaccio": [
+    "NoError",
+    7
+   ]
+  }
+ },
+ "stella_cometa": {
+  "nome": "Stella",
+  "ingombro": [
+   72,
+   76,
+   10
+  ],
+  "grammi": 5,
+  "colori": [
+   "oro",
+   "argento"
+  ],
+  "pezzi_unico": 1,
+  "status": {
+   "oro": [
+    "NoError",
+    1
+   ],
+   "argento": [
+    "NoError",
+    1
+   ]
+  }
+ },
+ "pallina_spirale": {
+  "nome": "Pallina a spirale",
+  "ingombro": [
+   65,
+   65,
+   76
+  ],
+  "grammi": 83,
+  "colori": [
+   "oro",
+   "rosso"
+  ],
+  "pezzi_unico": 1,
+  "status": {
+   "oro": [
+    "NoError",
+    2
+   ],
+   "rosso": [
+    "NoError",
+    2
+   ]
+  }
+ },
+ "albero_spirale": {
+  "nome": "Albero a spirale",
+  "ingombro": [
+   83,
+   83,
+   145
+  ],
+  "grammi": 94,
+  "colori": [
+   "verde",
+   "oro",
+   "rosso",
+   "marrone"
+  ],
+  "pezzi_unico": 1,
+  "status": {
+   "verde": [
+    "NoError",
+    1
+   ],
+   "oro": [
+    "NoError",
+    11
+   ],
+   "rosso": [
+    "NoError",
+    10
+   ],
+   "marrone": [
+    "NoError",
+    1
+   ]
+  }
+ },
+ "pupazzo_neve": {
+  "nome": "Pupazzo di neve",
+  "ingombro": [
+   63,
+   46,
+   98
+  ],
+  "grammi": 51,
+  "colori": [
+   "arancio",
+   "rosso",
+   "nero",
+   "marrone",
+   "bianco"
+  ],
+  "pezzi_unico": 1,
+  "status": {
+   "arancio": [
+    "NoError",
+    1
+   ],
+   "rosso": [
+    "NoError",
+    2
+   ],
+   "nero": [
+    "NoError",
+    12
+   ],
+   "marrone": [
+    "NoError",
+    2
+   ],
+   "bianco": [
+    "NoError",
+    1
+   ]
+  }
+ },
+ "pikachu_natale": {
+  "nome": "Pikachu Babbo Natale",
+  "ingombro": [
+   90,
+   47,
+   69
+  ],
+  "grammi": 43,
+  "colori": [
+   "bianco",
+   "rosso",
+   "nero",
+   "giallo"
+  ],
+  "pezzi_unico": 1,
+  "status": {
+   "bianco": [
+    "NoError",
+    4
+   ],
+   "rosso": [
+    "NoError",
+    3
+   ],
+   "nero": [
+    "NoError",
+    6
+   ],
+   "giallo": [
+    "NoError",
+    1
+   ]
+  }
+ }
+}

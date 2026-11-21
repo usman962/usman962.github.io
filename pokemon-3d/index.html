@@ -1,11 +1,12 @@
 <meta charset="utf-8">
-<title>Stampe 3D Pokémon</title>
+<title>Officina Stampe 3D</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
 <style>
 /* Layout: selettore varianti in alto, viewer 3D grande a sinistra, scheda di stampa a destra; una colonna su telefono */
 :root{
+  --night:#0F2A1E; --night2:#1B4430; --gold:#E2B13C; --xred:#C8202F;
   --bg:#FBF8EF; --surface:#FFFFFF; --fg:#24211A; --muted:#6E685A; --line:#E7E0CC;
   --accent:#F7C600; --accent-ink:#24211A; --stage:#F1EBDA;
   --easy:#2F8F4E; --mid:#B7791F; --hard:#C2412D;
@@ -36,6 +37,15 @@ h1 .bolt{display:inline-block;width:.62em;height:.62em;margin-right:.18em;vertic
 .tab span{font:500 12px var(--body);background:var(--line);color:var(--fg);border-radius:999px;padding:1px 7px;margin-left:4px;vertical-align:2px}
 .tab[aria-selected="true"]{color:var(--fg);border-bottom-color:var(--accent)}
 .tab:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.tab.xmas[aria-selected="true"]{border-bottom-color:var(--xred)}
+.tab.xmas::before{content:"";display:inline-block;width:.7em;height:.7em;margin-right:.35em;vertical-align:-.02em;background:var(--xred);
+  clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+body[data-g="natale"] .tab.xmas::before{background:var(--gold)}
+.stage{transition:background .5s}
+body[data-g="natale"] .stage{background:radial-gradient(120% 90% at 50% 0%,var(--night2),var(--night) 70%)}
+body[data-g="natale"] .stage .hint{color:#CFE3D6}
+body[data-g="natale"] .dl{background:var(--xred);color:#FFF8EC}
+body[data-g="natale"] .vbtn[aria-pressed="true"]{border-color:var(--xred);box-shadow:0 0 0 1.5px var(--xred) inset}
 .picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:0 0 18px}
 .vbtn{text-align:left;font:inherit;color:var(--fg);background:var(--surface);border:1.5px solid var(--line);
   border-radius:14px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -80,11 +90,12 @@ code{font:12.5px var(--mono)}
 
 <div class="wrap">
   <header>
-    <h1><span class="bolt" aria-hidden="true"></span>Stampe 3D Pokémon</h1>
-    <p class="sub">Svuota tasche e figure da stampare in 3D. Scegli una scheda e un modello, ruotalo, poi scarica il pacchetto con 3MF multicolore e STL.</p>
+    <h1><span class="bolt" aria-hidden="true"></span>Officina Stampe 3D</h1>
+    <p class="sub">Svuota tasche, figure e decorazioni di Natale da stampare in 3D. Scegli una scheda e un modello, ruotalo, poi scarica il pacchetto con 3MF multicolore e STL.</p>
     <nav class="tabs" role="tablist" aria-label="Sezioni">
       <button class="tab" role="tab" id="tab-svuotatasche" data-g="svuotatasche" aria-selected="true">Svuota tasche <span>7</span></button>
       <button class="tab" role="tab" id="tab-figure" data-g="figure" aria-selected="false">Figure <span>4</span></button>
+      <button class="tab xmas" role="tab" id="tab-natale" data-g="natale" aria-selected="false">Natale <span>6</span></button>
     </nav>
   </header>
 
@@ -117,7 +128,7 @@ code{font:12.5px var(--mono)}
           <dt>Difficoltà</dt><dd id="s-lv"></dd>
           <dt>Ingombro</dt><dd id="s-size"></dd>
           <dt>Filamento stimato</dt><dd id="s-g"></dd>
-          <dt>Faccia</dt><dd id="s-face"></dd>
+          <dt id="s-face-l">Faccia</dt><dd id="s-face"></dd>
           <dt>Supporti</dt><dd id="s-sup">Nessuno</dd>
         </dl>
         <ul class="cols" id="s-cols"></ul>
@@ -140,9 +151,9 @@ code{font:12.5px var(--mono)}
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const VARIANTS = [{"id": "mini", "nome": "Mini tonda", "pk": "Pikachu", "size": [120, 127, 18], "g": 40, "colori": ["nero", "giallo", "rosso"], "liv": "Facile", "txt": "Tonda, piccola. Faccia in rilievo: si legge anche stampata in un solo colore.", "group": "svuotatasche", "zip": "svuotatasche_mini.zip"}, {"id": "classica_rilievo", "nome": "Classica in rilievo", "pk": "Pikachu", "size": [188, 106, 22], "g": 72, "colori": ["nero", "giallo", "rosso"], "liv": "Facile", "txt": "L'ovale originale con la faccia in rilievo di 1 mm, adatta a stampanti monocolore.", "group": "svuotatasche", "zip": "svuotatasche_classica_rilievo.zip"}, {"id": "classica", "nome": "Classica intarsiata", "pk": "Pikachu", "size": [188, 106, 22], "g": 71, "colori": ["nero", "giallo", "rosso"], "liv": "Media", "txt": "L'ovale originale con la faccia intarsiata a filo nel fondo. Serve AMS o MMU.", "group": "svuotatasche", "zip": "svuotatasche_classica.zip"}, {"id": "deluxe", "nome": "Deluxe con coda", "pk": "Pikachu", "size": [189, 111, 24], "g": 74, "colori": ["nero", "marrone", "giallo", "rosso"], "liv": "Avanzata", "txt": "Due scomparti, uno piccolo per monete e chiavi, e la coda a fulmine con la base marrone.", "group": "svuotatasche", "zip": "svuotatasche_deluxe.zip"}, {"id": "pokeball", "nome": "Poké Ball", "pk": "Poké Ball", "size": [130, 130, 20], "g": 50, "colori": ["rosso", "bianco", "nero"], "liv": "Media", "txt": "Vassoio tondo diviso in rosso e bianco, fascia nera su pareti e fondo, pulsante al centro.", "group": "svuotatasche", "zip": "svuotatasche_pokeball.zip"}, {"id": "eevee", "nome": "Eevee", "pk": "Eevee", "size": [157, 129, 22], "g": 70, "colori": ["cioccolato", "nocciola", "crema", "nero", "bianco"], "liv": "Avanzata", "txt": "Orecchie lunghe con le punte scure, occhi lucidi, muso color crema. Cinque colori.", "group": "svuotatasche", "zip": "svuotatasche_eevee.zip"}, {"id": "snorlax", "nome": "Snorlax", "pk": "Snorlax", "size": [170, 124, 22], "g": 69, "colori": ["verde_acqua", "crema", "nero", "bianco"], "liv": "Media", "txt": "Ovale largo, pancia color crema sul fondo, occhi chiusi e sorriso con i dentini.", "group": "svuotatasche", "zip": "svuotatasche_snorlax.zip"}, {"id": "pikachu_figura", "group": "figure", "nome": "Pikachu", "pk": "Figura", "size": [62, 65, 105], "g": 51, "colori": ["giallo", "nero", "marrone", "rosso", "bianco"], "liv": "Avanzata", "txt": "In piedi, con le orecchie dalle punte nere, la coda a fulmine e le strisce marroni sulla schiena.", "zip": "pikachu_figura.zip"}, {"id": "jigglypuff_figura", "group": "figure", "nome": "Jigglypuff", "pk": "Figura", "size": [64, 56, 62], "g": 58, "colori": ["rosa", "nero", "turchese", "bianco"], "liv": "Media", "txt": "Tondo, con il ciuffo arricciato in rilievo, orecchie con l'interno nero e occhioni turchesi.", "zip": "jigglypuff_figura.zip"}, {"id": "snorlax_figura", "group": "figure", "nome": "Snorlax", "pk": "Figura", "size": [78, 58, 81], "g": 86, "colori": ["bianco", "crema", "verde_acqua", "nero"], "liv": "Media", "txt": "Seduto, con la pancia color crema, gli occhi chiusi, i dentini e i cuscinetti sotto i piedi.", "zip": "snorlax_figura.zip"}, {"id": "pokeball_figura", "group": "figure", "nome": "Poké Ball", "pk": "Figura", "size": [64, 66, 59], "g": 76, "colori": ["bianco", "nero", "rosso"], "liv": "Facile", "txt": "Sfera con base piatta e pulsante in rilievo. Tre colori, nessun dettaglio fine.", "zip": "pokeball_figura.zip"}];
+const VARIANTS = [{"id": "mini", "nome": "Mini tonda", "pk": "Pikachu", "size": [120, 127, 18], "g": 40, "colori": ["nero", "giallo", "rosso"], "liv": "Facile", "txt": "Tonda, piccola. Faccia in rilievo: si legge anche stampata in un solo colore.", "group": "svuotatasche", "zip": "svuotatasche_mini.zip"}, {"id": "classica_rilievo", "nome": "Classica in rilievo", "pk": "Pikachu", "size": [188, 106, 22], "g": 72, "colori": ["nero", "giallo", "rosso"], "liv": "Facile", "txt": "L'ovale originale con la faccia in rilievo di 1 mm, adatta a stampanti monocolore.", "group": "svuotatasche", "zip": "svuotatasche_classica_rilievo.zip"}, {"id": "classica", "nome": "Classica intarsiata", "pk": "Pikachu", "size": [188, 106, 22], "g": 71, "colori": ["nero", "giallo", "rosso"], "liv": "Media", "txt": "L'ovale originale con la faccia intarsiata a filo nel fondo. Serve AMS o MMU.", "group": "svuotatasche", "zip": "svuotatasche_classica.zip"}, {"id": "deluxe", "nome": "Deluxe con coda", "pk": "Pikachu", "size": [189, 111, 24], "g": 74, "colori": ["nero", "marrone", "giallo", "rosso"], "liv": "Avanzata", "txt": "Due scomparti, uno piccolo per monete e chiavi, e la coda a fulmine con la base marrone.", "group": "svuotatasche", "zip": "svuotatasche_deluxe.zip"}, {"id": "pokeball", "nome": "Poké Ball", "pk": "Poké Ball", "size": [130, 130, 20], "g": 50, "colori": ["rosso", "bianco", "nero"], "liv": "Media", "txt": "Vassoio tondo diviso in rosso e bianco, fascia nera su pareti e fondo, pulsante al centro.", "group": "svuotatasche", "zip": "svuotatasche_pokeball.zip"}, {"id": "eevee", "nome": "Eevee", "pk": "Eevee", "size": [157, 129, 22], "g": 70, "colori": ["cioccolato", "nocciola", "crema", "nero", "bianco"], "liv": "Avanzata", "txt": "Orecchie lunghe con le punte scure, occhi lucidi, muso color crema. Cinque colori.", "group": "svuotatasche", "zip": "svuotatasche_eevee.zip"}, {"id": "snorlax", "nome": "Snorlax", "pk": "Snorlax", "size": [170, 124, 22], "g": 69, "colori": ["verde_acqua", "crema", "nero", "bianco"], "liv": "Media", "txt": "Ovale largo, pancia color crema sul fondo, occhi chiusi e sorriso con i dentini.", "group": "svuotatasche", "zip": "svuotatasche_snorlax.zip"}, {"id": "pikachu_figura", "group": "figure", "nome": "Pikachu", "pk": "Figura", "size": [62, 65, 105], "g": 51, "colori": ["giallo", "nero", "marrone", "rosso", "bianco"], "liv": "Avanzata", "txt": "In piedi, con le orecchie dalle punte nere, la coda a fulmine e le strisce marroni sulla schiena.", "zip": "pikachu_figura.zip"}, {"id": "jigglypuff_figura", "group": "figure", "nome": "Jigglypuff", "pk": "Figura", "size": [64, 56, 62], "g": 58, "colori": ["rosa", "nero", "turchese", "bianco"], "liv": "Media", "txt": "Tondo, con il ciuffo arricciato in rilievo, orecchie con l'interno nero e occhioni turchesi.", "zip": "jigglypuff_figura.zip"}, {"id": "snorlax_figura", "group": "figure", "nome": "Snorlax", "pk": "Figura", "size": [78, 58, 81], "g": 86, "colori": ["bianco", "crema", "verde_acqua", "nero"], "liv": "Media", "txt": "Seduto, con la pancia color crema, gli occhi chiusi, i dentini e i cuscinetti sotto i piedi.", "zip": "snorlax_figura.zip"}, {"id": "pokeball_figura", "group": "figure", "nome": "Poké Ball", "pk": "Figura", "size": [64, 66, 59], "g": 76, "colori": ["bianco", "nero", "rosso"], "liv": "Facile", "txt": "Sfera con base piatta e pulsante in rilievo. Tre colori, nessun dettaglio fine.", "zip": "pokeball_figura.zip"}, {"id": "fiocco_neve", "group": "natale", "nome": "Fiocco di neve", "pk": "Natale", "size": [76, 95, 3], "g": 4, "colori": ["bianco", "ghiaccio"], "liv": "Facile", "txt": "Fiocco a sei bracci con rombi sulle punte e anello per appenderlo. Linee color ghiaccio a filo sulla faccia.", "sup": "Nessuno", "det": "Linee ghiaccio a filo 0,6 mm", "zip": "fiocco_neve.zip"}, {"id": "stella_cometa", "group": "natale", "nome": "Stella", "pk": "Natale", "size": [72, 76, 10], "g": 5, "colori": ["oro", "argento"], "liv": "Facile", "txt": "Stella a cinque punte sfaccettata come un gioiello, con stellina d'argento al centro e anello in punta.", "sup": "Nessuno", "det": "Stellina argento a filo", "zip": "stella_cometa.zip"}, {"id": "pallina_spirale", "group": "natale", "nome": "Pallina a spirale", "pk": "Natale", "size": [65, 65, 76], "g": 83, "colori": ["oro", "rosso"], "liv": "Media", "txt": "Pallina con solchi a spirale da polo a polo, fascia dorata in rilievo, cappuccio rigato e gancio.", "sup": "Ad albero sotto la metà bassa", "det": "Fascia in rilievo 0,7 mm", "zip": "pallina_spirale.zip"}, {"id": "albero_spirale", "group": "natale", "nome": "Albero a spirale", "pk": "Natale", "size": [83, 83, 145], "g": 94, "colori": ["verde", "oro", "rosso", "marrone"], "liv": "Media", "txt": "Albero ritorto a otto punte con 20 palline rosse e oro sulla spirale e la stella in cima.", "sup": "Pochi, sotto le palline", "det": "Palline e stella in rilievo", "zip": "albero_spirale.zip"}, {"id": "pupazzo_neve", "group": "natale", "nome": "Pupazzo di neve", "pk": "Natale", "size": [63, 46, 98], "g": 51, "colori": ["arancio", "rosso", "nero", "marrone", "bianco"], "liv": "Avanzata", "txt": "Cilindro con nastro rosso, sciarpa annodata, naso a carota, rametti per braccia e bottoni di carbone.", "sup": "Ad albero sotto braccia e sciarpa", "det": "Occhi e bottoni a filo 0,8 mm", "zip": "pupazzo_neve.zip"}, {"id": "pikachu_natale", "group": "natale", "nome": "Pikachu Babbo Natale", "pk": "Natale", "size": [90, 47, 69], "g": 43, "colori": ["bianco", "rosso", "nero", "giallo"], "liv": "Avanzata", "txt": "Pikachu con il cappello di Babbo Natale, bordo di pelo e pompon. Si appoggia sul mento piatto.", "sup": "Ad albero sotto orecchie e cappello", "det": "Faccia intarsiata 0,8 mm", "zip": "pikachu_natale.zip"}];
 const COLORS = {giallo:["#F7C600","Giallo"],nero:["#1C1C1C","Nero"],rosso:["#E3262B","Rosso"],marrone:["#7A4A22","Marrone"],
-  bianco:["#F4F4F0","Bianco"],verde_acqua:["#2E6E78","Verde acqua"],crema:["#EBD7A8","Crema"],nocciola:["#B5793F","Nocciola"],cioccolato:["#4E321A","Cioccolato"],rosa:["#F6A9C4","Rosa"],turchese:["#1F8A9A","Turchese"]};
+  bianco:["#F4F4F0","Bianco"],verde_acqua:["#2E6E78","Verde acqua"],crema:["#EBD7A8","Crema"],nocciola:["#B5793F","Nocciola"],cioccolato:["#4E321A","Cioccolato"],rosa:["#F6A9C4","Rosa"],turchese:["#1F8A9A","Turchese"],verde:["#1F7A3F","Verde"],oro:["#D9A82E","Oro"],argento:["#C3C9D2","Argento"],arancio:["#F28A22","Arancio"],ghiaccio:["#9FD3EC","Ghiaccio"]};
 const RAISED = new Set(["mini","classica_rilievo"]);
 let group = "svuotatasche";
 
@@ -167,6 +178,29 @@ const fill = new THREE.DirectionalLight(0xfff3d6, 0.6); fill.position.set(200, 8
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.ShadowMaterial({ opacity: 0.18 }));
 ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
 
+// neve che cade, solo nella scheda Natale
+const SNOW_N = 700;
+const snowPos = new Float32Array(SNOW_N * 3);
+const snowSpd = new Float32Array(SNOW_N);
+for (let i = 0; i < SNOW_N; i++) {
+  snowPos[i * 3] = (Math.random() - 0.5) * 500;
+  snowPos[i * 3 + 1] = Math.random() * 320;
+  snowPos[i * 3 + 2] = (Math.random() - 0.5) * 500;
+  snowSpd[i] = 8 + Math.random() * 16;
+}
+const snowGeo = new THREE.BufferGeometry();
+snowGeo.setAttribute("position", new THREE.BufferAttribute(snowPos, 3));
+const flakeTex = (() => {
+  const c = document.createElement("canvas"); c.width = c.height = 64;
+  const x = c.getContext("2d"); const gr = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.4, "rgba(255,255,255,.75)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+  x.fillStyle = gr; x.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c);
+})();
+const snow = new THREE.Points(snowGeo, new THREE.PointsMaterial({ size: 3.2, map: flakeTex, transparent: true, depthWrite: false, opacity: 0.9 }));
+snow.visible = false;
+scene.add(snow);
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 const model = new THREE.Group();
 model.rotation.x = -Math.PI / 2;
 scene.add(model);
@@ -180,7 +214,7 @@ let exploded = false, explodeT = 0, viewKind = "persp", current = null, dist = 1
 function setView(kind) {
   viewKind = kind;
   const k = dist;
-  const fig = current && current.group === "figure";
+  const fig = current && current.group !== "svuotatasche";
   const views = fig ? { persp: [0.35, 0.55, 1.0], top: [0, 1.35, 0.001], side: [1.2, 0.35, 0.001] }
                     : { persp: [0.42, 0.95, 0.8], top: [0, 1.35, 0.001], side: [0, 0.28, 1.25] };
   const p = views[kind];
@@ -215,7 +249,9 @@ async function show(v) {
   $("s-size").textContent = v.size.join(" × ") + " mm";
   $("s-g").textContent = "≈ " + v.g + " g PLA";
   $("s-face").textContent = v.group === "figure" ? "Intarsi a filo 0,8 mm" : RAISED.has(v.id) ? "In rilievo 1 mm" : "Intarsiata 0,8 mm";
-  $("s-sup").textContent = v.group === "figure" ? "Sì, ad albero sotto le sporgenze" : "Nessuno";
+  $("s-sup").textContent = v.sup || (v.group === "figure" ? "Sì, ad albero sotto le sporgenze" : "Nessuno");
+  $("s-face-l").textContent = v.group === "natale" ? "Dettagli" : "Faccia";
+  if (v.det) $("s-face").textContent = v.det;
   $("s-cols").innerHTML = "";
   for (const c of v.colori) {
     const li = document.createElement("li");
@@ -240,13 +276,15 @@ async function show(v) {
       g.setAttribute("position", new THREE.BufferAttribute(f, 3));
       g.setIndex(new THREE.BufferAttribute(new Uint32Array(b64(part.i)), 1));
       g = g.toNonIndexed(); g.computeVertexNormals();
-      const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: part.color, roughness: 0.55 }));
+      const metal = name === "oro" || name === "argento";
+      const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: part.color, roughness: metal ? 0.32 : 0.55, metalness: metal ? 0.45 : 0 }));
       m.castShadow = true; m.receiveShadow = true;
-      m.userData.lift = name === bodyKey ? 0 : (lift += v.group === "figure" ? 0 : 18);
-      m.userData.push = v.group === "figure" && name !== bodyKey ? 1 : 0;
+      const flat = v.size[2] < 12;
+      m.userData.lift = name === bodyKey ? 0 : (lift += (v.group === "svuotatasche" || flat) ? 18 : 0);
+      m.userData.push = v.group !== "svuotatasche" && !flat && name !== bodyKey ? 1 : 0;
       model.add(m); meshes.push(m);
     }
-    dist = v.group === "figure" ? Math.max(...v.size) * 1.9 + 40 : Math.max(v.size[0], v.size[1]) * 1.35 + 60;
+    dist = v.group !== "svuotatasche" ? Math.max(...v.size) * 1.9 + 40 : Math.max(v.size[0], v.size[1]) * 1.35 + 60;
     setView(viewKind);
     $("loading").hidden = true;
   } catch (e) {
@@ -257,17 +295,21 @@ async function show(v) {
 const picker = $("picker");
 function setGroup(g) {
   group = g;
+  document.body.dataset.g = g;
+  snow.visible = g === "natale";
+  ground.material.opacity = g === "natale" ? 0.35 : 0.18;
   for (const t of document.querySelectorAll(".tab")) t.setAttribute("aria-selected", String(t.dataset.g === g));
   for (const b of document.querySelectorAll(".vbtn")) b.hidden = VARIANTS.find((x) => x.id === b.dataset.id).group !== g;
-  show(VARIANTS.find((v) => v.group === g && (g === "figure" ? v.id === "pikachu_figura" : v.id === "classica")));
+  const first = { figure: "pikachu_figura", svuotatasche: "classica", natale: "albero_spirale" }[g];
+  show(VARIANTS.find((v) => v.id === first));
 }
 for (const t of document.querySelectorAll(".tab")) t.onclick = () => { history.replaceState(null, "", "#" + t.dataset.g); setGroup(t.dataset.g); };
-window.addEventListener("hashchange", () => { const g = location.hash.slice(1); if (g === "figure" || g === "svuotatasche") setGroup(g); });
+window.addEventListener("hashchange", () => { const g = location.hash.slice(1); if (["figure", "svuotatasche", "natale"].includes(g)) setGroup(g); });
 for (const v of VARIANTS) {
   const b = document.createElement("button");
   b.className = "vbtn"; b.dataset.id = v.id; b.setAttribute("aria-pressed", "false");
   const pk = document.createElement("span"); pk.className = "pk"; pk.textContent = v.pk;
-  const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = v.group === "figure" ? v.nome : v.pk === v.nome ? "Vassoio " + v.nome : v.nome;
+  const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = v.group !== "svuotatasche" ? v.nome : v.pk === v.nome ? "Vassoio " + v.nome : v.nome;
   const dots = document.createElement("span"); dots.className = "dots";
   for (const c of v.colori) { const i = document.createElement("i"); i.style.background = COLORS[c][0]; i.title = COLORS[c][1]; dots.append(i); }
   const lv = document.createElement("span"); lv.className = "lv"; lv.dataset.l = v.liv; lv.textContent = v.liv + " · " + v.colori.length + (v.colori.length === 1 ? " colore" : " colori");
@@ -278,13 +320,21 @@ for (const v of VARIANTS) {
 
 resize();
 setSpin(spin);
-setGroup(location.hash === "#figure" ? "figure" : "svuotatasche");
+setGroup(["#figure", "#natale"].includes(location.hash) ? location.hash.slice(1) : "svuotatasche");
 
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = clock.getDelta();
   if (spin) model.rotation.z += dt * 0.25;
   explodeT += ((exploded ? 1 : 0) - explodeT) * Math.min(1, dt * 6);
+  if (snow.visible && !reduceMotion) {
+    for (let i = 0; i < SNOW_N; i++) {
+      snowPos[i * 3 + 1] -= snowSpd[i] * dt;
+      snowPos[i * 3] += Math.sin(clock.elapsedTime * 0.6 + i) * dt * 4;
+      if (snowPos[i * 3 + 1] < 0) snowPos[i * 3 + 1] = 320;
+    }
+    snowGeo.attributes.position.needsUpdate = true;
+  }
   for (const m of meshes) { m.position.z = explodeT * m.userData.lift; m.position.y = -explodeT * 14 * m.userData.push; }
   controls.update();
   renderer.render(scene, camera);

@@ -1,0 +1,17 @@
+DECORAZIONI DI NATALE - file per stampa 3D
+==========================================
+  <nome>.3mf          -> multicolore (AMS / MMU): 1 oggetto con una parte per colore
+  <nome>_<colore>.stl -> una parte per colore, gia' posizionate
+  <nome>_unico.stl    -> tutto in un pezzo (stampa monocolore)
+
+Fiocco di neve (76x95x3 mm) e Stella (72x76x10 mm): piatti, senza supporti, con anello.
+  Il fiocco in monocolore: bianco o glitter; con AMS le linee centrali sono color ghiaccio.
+Pallina a spirale (65x65x76 mm): supporti ad albero sotto la meta' bassa; o stampa in
+  modalita' vaso con lo STL unico per una pallina leggera.
+Albero a spirale (83x83x145 mm): stampa dritto, supporti solo sotto le palline (o nessuno
+  se il tuo slicer regge 45 gradi).
+Pupazzo di neve (63x46x98 mm) e Pikachu Babbo Natale (90x47x69 mm): supporti ad albero, brim.
+
+Impostazioni consigliate: PLA (oro/argento silk per stella e dettagli!), layer 0,16 mm,
+3 perimetri, infill 15%. Script: natale.py (usa ../figure e ../svuotatasche).
+Pikachu/Pokemon: uso personale (marchi Nintendo/Game Freak/Creatures).

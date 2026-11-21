@@ -9,7 +9,8 @@ from manifold3d import Manifold, Mesh, CrossSection
 OUT = sys.argv[1] if len(sys.argv) > 1 else "."
 COL = {"giallo": "#F7C600", "nero": "#1C1C1C", "rosso": "#E3262B", "marrone": "#7A4A22",
        "bianco": "#F4F4F0", "verde_acqua": "#2E6E78", "crema": "#EBD7A8", "nocciola": "#B5793F",
-       "cioccolato": "#4E321A", "rosa": "#F6A9C4", "turchese": "#1F8A9A"}
+       "cioccolato": "#4E321A", "rosa": "#F6A9C4", "turchese": "#1F8A9A",
+       "verde": "#1F7A3F", "oro": "#D9A82E", "argento": "#C3C9D2", "arancio": "#F28A22", "ghiaccio": "#9FD3EC"}
 ADD = manifold3d.OpType.Add
 
 VARIANTI = {
