@@ -1,74 +1,88 @@
-<title>Svuota tasche Pikachu</title>
+<title>Svuota tasche Pokémon</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
 <style>
-/* Layout: viewer 3D grande a sinistra, scheda tecnica di stampa a destra; una colonna su telefono */
+/* Layout: selettore varianti in alto, viewer 3D grande a sinistra, scheda di stampa a destra; una colonna su telefono */
 :root{
   --bg:#FBF8EF; --surface:#FFFFFF; --fg:#24211A; --muted:#6E685A; --line:#E7E0CC;
-  --accent:#F7C600; --accent-ink:#24211A; --red:#E3262B; --stage:#F1EBDA;
+  --accent:#F7C600; --accent-ink:#24211A; --stage:#F1EBDA;
+  --easy:#2F8F4E; --mid:#B7791F; --hard:#C2412D;
   --display:"Fredoka","Trebuchet MS",system-ui,sans-serif;
   --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#17150F; --surface:#211E16; --fg:#F3EEDF; --muted:#A79F8B; --line:#353023;
-  --accent:#F7C600; --accent-ink:#1A170F; --red:#FF5A5E; --stage:#1D1A13; color-scheme:dark}}
+  --accent:#F7C600; --accent-ink:#1A170F; --stage:#1D1A13;
+  --easy:#5BC07A; --mid:#E3A945; --hard:#F07560; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#17150F; --surface:#211E16; --fg:#F3EEDF; --muted:#A79F8B; --line:#353023;
-  --accent:#F7C600; --accent-ink:#1A170F; --red:#FF5A5E; --stage:#1D1A13; color-scheme:dark}
+  --accent:#F7C600; --accent-ink:#1A170F; --stage:#1D1A13;
+  --easy:#5BC07A; --mid:#E3A945; --hard:#F07560; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.55}
 .wrap{max-width:1180px;margin:0 auto;padding-block:28px 48px;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 24px;margin-bottom:20px}
+header{margin-bottom:18px}
 h1{font-family:var(--display);font-weight:600;font-size:clamp(28px,4.4vw,44px);line-height:1.05;margin:0;text-wrap:balance}
 h1 .bolt{display:inline-block;width:.62em;height:.62em;margin-right:.18em;vertical-align:.02em;
   background:var(--accent);clip-path:polygon(55% 0,10% 58%,45% 58%,32% 100%,90% 38%,54% 38%,72% 0)}
-.sub{color:var(--muted);margin:6px 0 0;max-width:60ch}
+.sub{color:var(--muted);margin:6px 0 0;max-width:62ch}
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:0 0 18px}
+.vbtn{text-align:left;font:inherit;color:var(--fg);background:var(--surface);border:1.5px solid var(--line);
+  border-radius:14px;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-width:0}
+.vbtn:hover{border-color:var(--muted)}
+.vbtn[aria-pressed="true"]{border-color:var(--fg);box-shadow:0 0 0 1.5px var(--fg) inset}
+.vbtn:focus-visible,.chip:focus-visible,.dl:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.vbtn .pk{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.vbtn .nm{font-family:var(--display);font-weight:600;font-size:16px;line-height:1.15}
+.dots{display:flex;gap:3px}
+.dots i{width:12px;height:12px;border-radius:50%;border:1px solid rgba(0,0,0,.18)}
+.lv{font-size:12px;font-weight:600}
+.lv[data-l="Facile"]{color:var(--easy)} .lv[data-l="Media"]{color:var(--mid)} .lv[data-l="Avanzata"]{color:var(--hard)}
 .grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:20px}
 @media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
 .stage{position:relative;background:var(--stage);border-radius:20px;overflow:hidden;aspect-ratio:4/3;max-width:100%;min-height:320px}
 #c{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
 .hint{position:absolute;left:14px;bottom:12px;font-size:12px;color:var(--muted);pointer-events:none}
-.loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px;pointer-events:none}
 .tools{position:absolute;top:12px;left:12px;right:12px;display:flex;flex-wrap:wrap;gap:6px}
 .chip{font:500 13px var(--body);border:1px solid var(--line);background:var(--surface);color:var(--fg);
   border-radius:999px;padding:6px 12px;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.chip:focus-visible,.dl:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 aside{display:flex;flex-direction:column;gap:16px;min-width:0}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
-.card h2{font-family:var(--display);font-weight:600;font-size:19px;margin:0 0 10px}
+.card h2{font-family:var(--display);font-weight:600;font-size:20px;margin:0 0 4px}
+.desc{margin:0 0 14px;color:var(--muted)}
 .dl{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;border:0;cursor:pointer;
-  background:var(--accent);color:var(--accent-ink);font:600 16px var(--body);padding:14px 16px;border-radius:12px}
+  background:var(--accent);color:var(--accent-ink);font:600 15px var(--body);padding:13px 14px;border-radius:12px}
 .dl:disabled{opacity:.6;cursor:default}
-.dl svg{width:20px;height:20px}
+.dl svg{width:20px;height:20px;flex:none}
+.dl span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #status{font-size:13px;color:var(--muted);margin:8px 0 0;min-height:1.3em}
 dl.spec{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
 dl.spec dt{color:var(--muted)}
 dl.spec dd{margin:0;font-variant-numeric:tabular-nums;text-align:right}
-.files{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.files li{display:grid;grid-template-columns:14px minmax(0,1fr);gap:10px;align-items:start}
-.sw{width:14px;height:14px;border-radius:4px;margin-top:4px;border:1px solid var(--line)}
-.files code{font:12.5px var(--mono);word-break:break-all}
-.files span{display:block;color:var(--muted);font-size:13px}
+.cols{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 12px}
+.cols li{display:flex;align-items:center;gap:6px;font-size:13.5px}
+.cols i{width:13px;height:13px;border-radius:4px;border:1px solid rgba(0,0,0,.18)}
 .note{font-size:13.5px;color:var(--muted);margin:10px 0 0}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+code{font:12.5px var(--mono)}
 </style>
 
 <div class="wrap">
   <header>
-    <div>
-      <h1><span class="bolt" aria-hidden="true"></span>Svuota tasche Pikachu</h1>
-      <p class="sub">Vassoio ovale con orecchie e faccina intarsiata, pronto per la stampa 3D. Ruota il modello, poi scarica il pacchetto con 3MF multicolore e STL.</p>
-    </div>
+    <h1><span class="bolt" aria-hidden="true"></span>Svuota tasche Pokémon</h1>
+    <p class="sub">Sette vassoi da stampare in 3D, dal più semplice al più elaborato. Scegli una variante, ruotala, poi scarica il pacchetto con 3MF multicolore e STL.</p>
   </header>
+
+  <div class="picker" id="picker" role="group" aria-label="Varianti"></div>
 
   <div class="grid">
     <div class="stage">
-      <canvas id="c" aria-label="Anteprima 3D dello svuota tasche"></canvas>
+      <canvas id="c" aria-label="Anteprima 3D della variante scelta"></canvas>
       <div class="loading" id="loading">Carico il modello…</div>
       <div class="tools" role="toolbar" aria-label="Vista">
         <button class="chip" id="v-persp" aria-pressed="true">Prospettiva</button>
@@ -82,32 +96,26 @@ dl.spec dd{margin:0;font-variant-numeric:tabular-nums;text-align:right}
 
     <aside>
       <div class="card">
-        <h2>Scarica</h2>
+        <h2 id="v-name">—</h2>
+        <p class="desc" id="v-desc"></p>
         <button class="dl" id="dl" disabled>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 19h16"/></svg>
-          svuotatasche_pikachu.zip
+          <span id="dl-name">svuotatasche.zip</span>
         </button>
         <p id="status"></p>
-        <ul class="files">
-          <li><i class="sw" style="background:conic-gradient(#F7C600 0 50%,#1C1C1C 0 80%,#E3262B 0)"></i><div><code>svuotatasche_pikachu.3mf</code><span>Multicolore (AMS/MMU): un oggetto, 3 parti</span></div></li>
-          <li><i class="sw" style="background:#F7C600"></i><div><code>…_giallo.stl</code><span>Corpo e base delle orecchie</span></div></li>
-          <li><i class="sw" style="background:#1C1C1C"></i><div><code>…_nero.stl</code><span>Punte delle orecchie, occhi, bocca</span></div></li>
-          <li><i class="sw" style="background:#E3262B"></i><div><code>…_rosso.stl</code><span>Guance</span></div></li>
-          <li><i class="sw" style="background:linear-gradient(135deg,#F7C600,#F7C600)"></i><div><code>…_unico.stl</code><span>Tutto in un pezzo, per stampa monocolore</span></div></li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h2>Scheda tecnica</h2>
         <dl class="spec">
-          <dt>Ingombro</dt><dd>188 × 106 × 22 mm</dd>
-          <dt>Vassoio</dt><dd>180 × 88 mm</dd>
-          <dt>Parete / fondo</dt><dd>4 mm / 3 mm</dd>
-          <dt>Intarsio faccia</dt><dd>0,8 mm (4 layer)</dd>
-          <dt>Filamento stimato</dt><dd>≈ 70 g PLA</dd>
+          <dt>Difficoltà</dt><dd id="s-lv"></dd>
+          <dt>Ingombro</dt><dd id="s-size"></dd>
+          <dt>Filamento stimato</dt><dd id="s-g"></dd>
+          <dt>Faccia</dt><dd id="s-face"></dd>
           <dt>Supporti</dt><dd>Nessuno</dd>
         </dl>
-        <p class="note">PLA, layer 0,2 mm, 3 perimetri, infill 15%. Entra in piatti da 220 mm. Con gli STL: importa i tre file insieme e scegli “oggetto singolo con più parti”, poi assegna i colori.</p>
+        <ul class="cols" id="s-cols"></ul>
+      </div>
+      <div class="card">
+        <h2>Nel pacchetto</h2>
+        <p class="note" style="margin-top:6px"><code>.3mf</code> multicolore con una parte per colore, uno <code>.stl</code> per colore già posizionato, un <code>_unico.stl</code> per la stampa monocolore, istruzioni e lo script per cambiare le misure.</p>
+        <p class="note">PLA, layer 0,2 mm, 3 perimetri, infill 15%. Con gli STL: importali insieme e scegli “oggetto singolo con più parti”, poi assegna i colori.</p>
       </div>
     </aside>
   </div>
@@ -121,7 +129,13 @@ dl.spec dd{margin:0;font-variant-numeric:tabular-nums;text-align:right}
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const canvas = document.getElementById("c");
+const VARIANTS = [{"id": "mini", "nome": "Mini tonda", "pk": "Pikachu", "size": [120, 127, 18], "g": 40, "colori": ["nero", "giallo", "rosso"], "liv": "Facile", "txt": "Tonda, piccola. Faccia in rilievo: si legge anche stampata in un solo colore."}, {"id": "classica_rilievo", "nome": "Classica in rilievo", "pk": "Pikachu", "size": [188, 106, 22], "g": 72, "colori": ["nero", "giallo", "rosso"], "liv": "Facile", "txt": "L'ovale originale con la faccia in rilievo di 1 mm, adatta a stampanti monocolore."}, {"id": "classica", "nome": "Classica intarsiata", "pk": "Pikachu", "size": [188, 106, 22], "g": 71, "colori": ["nero", "giallo", "rosso"], "liv": "Media", "txt": "L'ovale originale con la faccia intarsiata a filo nel fondo. Serve AMS o MMU."}, {"id": "deluxe", "nome": "Deluxe con coda", "pk": "Pikachu", "size": [189, 111, 24], "g": 71, "colori": ["nero", "marrone", "giallo", "rosso"], "liv": "Avanzata", "txt": "Due scomparti, uno piccolo per monete e chiavi, e la coda a fulmine con la base marrone."}, {"id": "pokeball", "nome": "Poké Ball", "pk": "Poké Ball", "size": [130, 130, 20], "g": 50, "colori": ["rosso", "bianco", "nero"], "liv": "Media", "txt": "Vassoio tondo diviso in rosso e bianco, fascia nera su pareti e fondo, pulsante al centro."}, {"id": "eevee", "nome": "Eevee", "pk": "Eevee", "size": [157, 129, 22], "g": 70, "colori": ["cioccolato", "nocciola", "crema", "nero", "bianco"], "liv": "Avanzata", "txt": "Orecchie lunghe con le punte scure, occhi lucidi, muso color crema. Cinque colori."}, {"id": "snorlax", "nome": "Snorlax", "pk": "Snorlax", "size": [170, 121, 22], "g": 66, "colori": ["verde_acqua", "crema", "nero", "bianco"], "liv": "Media", "txt": "Ovale largo, pancia color crema sul fondo, occhi chiusi e sorriso con i dentini."}];
+const COLORS = {giallo:["#F7C600","Giallo"],nero:["#1C1C1C","Nero"],rosso:["#E3262B","Rosso"],marrone:["#7A4A22","Marrone"],
+  bianco:["#F4F4F0","Bianco"],verde_acqua:["#2E6E78","Verde acqua"],crema:["#EBD7A8","Crema"],nocciola:["#B5793F","Nocciola"],cioccolato:["#4E321A","Cioccolato"]};
+const RAISED = new Set(["mini","classica_rilievo"]);
+
+const $ = (id) => document.getElementById(id);
+const canvas = $("c");
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
@@ -130,103 +144,143 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(35, 1, 1, 3000);
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-controls.target.set(0, 4, -10);
-controls.minDistance = 120; controls.maxDistance = 900;
+controls.minDistance = 100; controls.maxDistance = 900;
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0x8a7a55, 1.6));
 const sun = new THREE.DirectionalLight(0xffffff, 2.2);
-sun.position.set(-120, 260, 160);
-sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048);
+sun.position.set(-120, 260, 160); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, { left: -160, right: 160, top: 160, bottom: -160, near: 10, far: 700 });
 scene.add(sun);
 const fill = new THREE.DirectionalLight(0xfff3d6, 0.6); fill.position.set(200, 80, -150); scene.add(fill);
-
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(2000, 2000), new THREE.ShadowMaterial({ opacity: 0.18 }));
 ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
 
 const model = new THREE.Group();
-model.rotation.x = -Math.PI / 2;   // Z del pezzo -> Y della scena
+model.rotation.x = -Math.PI / 2;
 scene.add(model);
-const meshes = {};
-
+let meshes = [];
+const cache = {};
 const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0)).buffer;
 
+let spin = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+let exploded = false, explodeT = 0, viewKind = "persp", current = null, dist = 1;
+
 function setView(kind) {
-  const views = { persp: [110, 250, 210], top: [0, 360, 0.01], side: [0, 70, 330] };
+  viewKind = kind;
+  const k = dist;
+  const views = { persp: [0.42, 0.95, 0.8], top: [0, 1.35, 0.001], side: [0, 0.28, 1.25] };
   const p = views[kind];
-  camera.position.set(p[0], p[1], p[2]);
-  if (kind !== "persp") { model.rotation.z = 0; spin = false; document.getElementById("spin").setAttribute("aria-pressed", "false"); }
-  controls.target.set(0, kind === "side" ? 10 : 2, -10);
-  for (const k of ["persp", "top", "side"]) document.getElementById("v-" + k).setAttribute("aria-pressed", String(k === kind));
+  camera.position.set(p[0] * k, p[1] * k, p[2] * k);
+  controls.target.set(0, kind === "side" ? 10 : 2, 0);
+  if (kind !== "persp") { model.rotation.z = 0; setSpin(false); }
+  for (const n of ["persp", "top", "side"]) $("v-" + n).setAttribute("aria-pressed", String(n === kind));
 }
+function setSpin(v) { spin = v; $("spin").setAttribute("aria-pressed", String(v)); }
 
 function resize() {
   const r = canvas.parentElement.getBoundingClientRect();
   renderer.setSize(r.width, r.height, false);
-  camera.aspect = r.width / r.height;
-  camera.updateProjectionMatrix();
+  camera.aspect = r.width / r.height; camera.updateProjectionMatrix();
 }
 new ResizeObserver(resize).observe(canvas.parentElement);
 
-let spin = !matchMedia("(prefers-reduced-motion: reduce)").matches;
-document.getElementById("spin").setAttribute("aria-pressed", String(spin));
-let exploded = false, explodeT = 0;
-
-async function load() {
-  const res = await fetch("preview.json");
-  const data = await res.json();
-  for (const [name, part] of Object.entries(data)) {
-    const pos = new Int16Array(b64(part.v));
-    const f = new Float32Array(pos.length);
-    for (let i = 0; i < pos.length; i++) f[i] = pos[i] / 100;
-    let g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(f, 3));
-    g.setIndex(new THREE.BufferAttribute(new Uint32Array(b64(part.i)), 1));
-    g = g.toNonIndexed();
-    g.computeVertexNormals();
-    const mat = new THREE.MeshStandardMaterial({ color: part.color, roughness: name === "nero" ? 0.45 : 0.55, metalness: 0 });
-    const m = new THREE.Mesh(g, mat);
-    m.castShadow = true; m.receiveShadow = true;
-    model.add(m); meshes[name] = m;
-  }
-  document.getElementById("loading").hidden = true;
+async function getData(id) {
+  if (!cache[id]) cache[id] = fetch(id + "/preview.json").then((r) => r.json());
+  return cache[id];
 }
 
-setView("persp");
+async function show(v) {
+  current = v;
+  for (const b of document.querySelectorAll(".vbtn")) b.setAttribute("aria-pressed", String(b.dataset.id === v.id));
+  $("v-name").textContent = v.nome;
+  $("v-desc").textContent = v.txt;
+  $("dl-name").textContent = "svuotatasche_" + v.id + ".zip";
+  $("s-lv").textContent = v.liv;
+  $("s-size").textContent = v.size.join(" × ") + " mm";
+  $("s-g").textContent = "≈ " + v.g + " g PLA";
+  $("s-face").textContent = v.id === "pokeball" ? "Intarsiata 0,8 mm" : RAISED.has(v.id) ? "In rilievo 1 mm" : "Intarsiata 0,8 mm";
+  $("s-cols").innerHTML = "";
+  for (const c of v.colori) {
+    const li = document.createElement("li");
+    const i = document.createElement("i"); i.style.background = COLORS[c][0];
+    li.append(i, COLORS[c][1]); $("s-cols").append(li);
+  }
+  $("loading").hidden = false;
+  try {
+    const data = await getData(v.id);
+    if (current !== v) return;
+    for (const m of meshes) { model.remove(m); m.geometry.dispose(); m.material.dispose(); }
+    meshes = [];
+    const parts = Object.entries(data);
+    // ordine di "esplosione": corpo in basso, dettagli sopra
+    const bodyKey = parts.reduce((a, b) => (b[1].v.length > a[1].v.length ? b : a))[0];
+    let lift = 0;
+    for (const [name, part] of parts) {
+      const pos = new Int16Array(b64(part.v));
+      const f = new Float32Array(pos.length);
+      for (let i = 0; i < pos.length; i++) f[i] = pos[i] / 100;
+      let g = new THREE.BufferGeometry();
+      g.setAttribute("position", new THREE.BufferAttribute(f, 3));
+      g.setIndex(new THREE.BufferAttribute(new Uint32Array(b64(part.i)), 1));
+      g = g.toNonIndexed(); g.computeVertexNormals();
+      const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: part.color, roughness: 0.55 }));
+      m.castShadow = true; m.receiveShadow = true;
+      m.userData.lift = name === bodyKey ? 0 : (lift += 18);
+      model.add(m); meshes.push(m);
+    }
+    dist = Math.max(v.size[0], v.size[1]) * 1.35 + 60;
+    setView(viewKind);
+    $("loading").hidden = true;
+  } catch (e) {
+    $("loading").textContent = "Impossibile caricare il modello. Ricarica la pagina.";
+  }
+}
+
+const picker = $("picker");
+for (const v of VARIANTS) {
+  const b = document.createElement("button");
+  b.className = "vbtn"; b.dataset.id = v.id; b.setAttribute("aria-pressed", "false");
+  const pk = document.createElement("span"); pk.className = "pk"; pk.textContent = v.pk;
+  const nm = document.createElement("span"); nm.className = "nm"; nm.textContent = v.pk === v.nome ? "Vassoio " + v.nome : v.nome;
+  const dots = document.createElement("span"); dots.className = "dots";
+  for (const c of v.colori) { const i = document.createElement("i"); i.style.background = COLORS[c][0]; i.title = COLORS[c][1]; dots.append(i); }
+  const lv = document.createElement("span"); lv.className = "lv"; lv.dataset.l = v.liv; lv.textContent = v.liv + " · " + v.colori.length + (v.colori.length === 1 ? " colore" : " colori");
+  b.append(pk, nm, dots, lv);
+  b.onclick = () => show(v);
+  picker.append(b);
+}
+
 resize();
-load().catch(() => { document.getElementById("loading").textContent = "Impossibile caricare il modello. Ricarica la pagina."; });
+setSpin(spin);
+show(VARIANTS.find((v) => v.id === "classica"));
 
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = clock.getDelta();
   if (spin) model.rotation.z += dt * 0.25;
   explodeT += ((exploded ? 1 : 0) - explodeT) * Math.min(1, dt * 6);
-  if (meshes.nero) { meshes.nero.position.z = explodeT * 26; meshes.rosso.position.z = explodeT * 44; }
+  for (const m of meshes) m.position.z = explodeT * m.userData.lift;
   controls.update();
   renderer.render(scene, camera);
 });
 
-for (const k of ["persp", "top", "side"]) document.getElementById("v-" + k).onclick = () => setView(k);
-const spinBtn = document.getElementById("spin");
-spinBtn.onclick = () => { spin = !spin; spinBtn.setAttribute("aria-pressed", String(spin)); };
-controls.addEventListener("start", () => { spin = false; spinBtn.setAttribute("aria-pressed", "false"); });
-const exBtn = document.getElementById("explode");
-exBtn.onclick = () => { exploded = !exploded; exBtn.setAttribute("aria-pressed", String(exploded)); };
+for (const k of ["persp", "top", "side"]) $("v-" + k).onclick = () => setView(k);
+$("spin").onclick = () => setSpin(!spin);
+controls.addEventListener("start", () => setSpin(false));
+$("explode").onclick = () => { exploded = !exploded; $("explode").setAttribute("aria-pressed", String(exploded)); };
 
-// Download tramite la capability della pagina
-const btn = document.getElementById("dl");
-const status = document.getElementById("status");
+const btn = $("dl"), status = $("status");
 (async () => {
   const downloads = window.claude ? await window.claude.use("downloads") : null;
   if (!downloads) { status.textContent = "Il download non è disponibile in questa vista: i file ti sono stati inviati anche in chat."; return; }
   btn.disabled = false;
   btn.onclick = async () => {
+    const v = current; if (!v) return;
     btn.disabled = true; status.textContent = "Preparo il file…";
     try {
-      const txt = (await (await fetch("pacchetto.txt")).text()).trim();
+      const txt = (await (await fetch("zip/" + v.id + ".txt")).text()).trim();
       const blob = new Blob([Uint8Array.from(atob(txt), (c) => c.charCodeAt(0))]);
-      await downloads.save({ filename: "svuotatasche_pikachu.zip", data: blob });
+      await downloads.save({ filename: "svuotatasche_" + v.id + ".zip", data: blob });
       status.textContent = "Scaricato.";
     } catch (e) {
       status.textContent = e && e.code === "declined" ? "Download annullato." : "Download non riuscito. Riprova.";
