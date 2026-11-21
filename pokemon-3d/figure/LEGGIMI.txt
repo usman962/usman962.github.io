@@ -1,0 +1,15 @@
+FIGURE POKEMON (stile chibi) - file per stampa 3D
+=================================================
+  <nome>.3mf          -> multicolore (AMS / MMU): 1 oggetto con una parte per colore
+  <nome>_<colore>.stl -> una parte per colore, gia' posizionate
+  <nome>_unico.stl    -> tutto in un pezzo (stampa monocolore, poi dipingi)
+
+Occhi, guance, pancia ecc. sono intarsi a filo sulla superficie (0,8 mm).
+Altezza: Pikachu 105 mm, Snorlax 81 mm, Jigglypuff 62 mm, Poke Ball 59 mm.
+Puoi scalarle nello slicer (consigliato non sotto il 70%: gli intarsi diventano sottili).
+
+Impostazioni consigliate: PLA, layer 0,12-0,16 mm, 3 perimetri, infill 10-15%,
+SUPPORTI AD ALBERO (tree) sotto mento, braccia, coda e parte bassa delle sfere,
+brim 5 mm. La coda di Pikachu e' spessa 6 mm: stampa con cura e senza fretta.
+Script: figure.py (usa ../svuotatasche/genera.py per l'esportazione).
+Uso personale: Pokemon e' un marchio registrato di Nintendo/Game Freak/Creatures.

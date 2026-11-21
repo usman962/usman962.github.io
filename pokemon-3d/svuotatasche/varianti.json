@@ -1,0 +1,218 @@
+{
+ "mini": {
+  "nome": "Mini tonda",
+  "ingombro": [
+   120,
+   127,
+   18
+  ],
+  "grammi": 40,
+  "colori": [
+   "nero",
+   "giallo",
+   "rosso"
+  ],
+  "status": {
+   "nero": [
+    "NoError",
+    -4
+   ],
+   "giallo": [
+    "NoError",
+    0
+   ],
+   "rosso": [
+    "NoError",
+    -1
+   ]
+  }
+ },
+ "classica_rilievo": {
+  "nome": "Classica in rilievo",
+  "ingombro": [
+   188,
+   106,
+   22
+  ],
+  "grammi": 72,
+  "colori": [
+   "nero",
+   "giallo",
+   "rosso"
+  ],
+  "status": {
+   "nero": [
+    "NoError",
+    -4
+   ],
+   "giallo": [
+    "NoError",
+    0
+   ],
+   "rosso": [
+    "NoError",
+    -1
+   ]
+  }
+ },
+ "classica": {
+  "nome": "Classica intarsiata",
+  "ingombro": [
+   188,
+   106,
+   22
+  ],
+  "grammi": 71,
+  "colori": [
+   "nero",
+   "giallo",
+   "rosso"
+  ],
+  "status": {
+   "nero": [
+    "NoError",
+    -4
+   ],
+   "giallo": [
+    "NoError",
+    0
+   ],
+   "rosso": [
+    "NoError",
+    -1
+   ]
+  }
+ },
+ "deluxe": {
+  "nome": "Deluxe con coda",
+  "ingombro": [
+   189,
+   111,
+   24
+  ],
+  "grammi": 74,
+  "colori": [
+   "nero",
+   "marrone",
+   "giallo",
+   "rosso"
+  ],
+  "status": {
+   "nero": [
+    "NoError",
+    -4
+   ],
+   "marrone": [
+    "NoError",
+    0
+   ],
+   "giallo": [
+    "NoError",
+    -2
+   ],
+   "rosso": [
+    "NoError",
+    -1
+   ]
+  }
+ },
+ "pokeball": {
+  "nome": "Pok\u00e9 Ball",
+  "ingombro": [
+   130,
+   130,
+   20
+  ],
+  "grammi": 50,
+  "colori": [
+   "rosso",
+   "bianco",
+   "nero"
+  ],
+  "status": {
+   "rosso": [
+    "NoError",
+    0
+   ],
+   "bianco": [
+    "NoError",
+    0
+   ],
+   "nero": [
+    "NoError",
+    2
+   ]
+  }
+ },
+ "eevee": {
+  "nome": "Eevee",
+  "ingombro": [
+   157,
+   129,
+   22
+  ],
+  "grammi": 70,
+  "colori": [
+   "cioccolato",
+   "nocciola",
+   "crema",
+   "nero",
+   "bianco"
+  ],
+  "status": {
+   "cioccolato": [
+    "NoError",
+    -1
+   ],
+   "nocciola": [
+    "NoError",
+    0
+   ],
+   "crema": [
+    "NoError",
+    1
+   ],
+   "nero": [
+    "NoError",
+    -1
+   ],
+   "bianco": [
+    "NoError",
+    -1
+   ]
+  }
+ },
+ "snorlax": {
+  "nome": "Snorlax",
+  "ingombro": [
+   170,
+   124,
+   22
+  ],
+  "grammi": 69,
+  "colori": [
+   "verde_acqua",
+   "crema",
+   "nero",
+   "bianco"
+  ],
+  "status": {
+   "verde_acqua": [
+    "NoError",
+    0
+   ],
+   "crema": [
+    "NoError",
+    3
+   ],
+   "nero": [
+    "NoError",
+    -2
+   ],
+   "bianco": [
+    "NoError",
+    -1
+   ]
+  }
+ }
+}

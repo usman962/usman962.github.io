@@ -1,0 +1,154 @@
+{
+ "pikachu_figura": {
+  "nome": "Pikachu",
+  "ingombro": [
+   62,
+   65,
+   105
+  ],
+  "grammi": 51,
+  "colori": [
+   "giallo",
+   "nero",
+   "marrone",
+   "rosso",
+   "bianco"
+  ],
+  "status": {
+   "giallo": [
+    "NoError",
+    0,
+    90442
+   ],
+   "nero": [
+    "NoError",
+    -3,
+    615
+   ],
+   "marrone": [
+    "NoError",
+    -2,
+    651
+   ],
+   "rosso": [
+    "NoError",
+    -1,
+    316
+   ],
+   "bianco": [
+    "NoError",
+    -1,
+    16
+   ]
+  },
+  "unico_genus": 0
+ },
+ "jigglypuff_figura": {
+  "nome": "Jigglypuff",
+  "ingombro": [
+   64,
+   56,
+   62
+  ],
+  "grammi": 58,
+  "colori": [
+   "rosa",
+   "nero",
+   "turchese",
+   "bianco"
+  ],
+  "status": {
+   "rosa": [
+    "NoError",
+    0,
+    103781
+   ],
+   "nero": [
+    "NoError",
+    -2,
+    173
+   ],
+   "turchese": [
+    "NoError",
+    3,
+    400
+   ],
+   "bianco": [
+    "NoError",
+    -3,
+    95
+   ]
+  },
+  "unico_genus": 0
+ },
+ "snorlax_figura": {
+  "nome": "Snorlax",
+  "ingombro": [
+   78,
+   58,
+   81
+  ],
+  "grammi": 86,
+  "colori": [
+   "bianco",
+   "crema",
+   "verde_acqua",
+   "nero"
+  ],
+  "status": {
+   "bianco": [
+    "NoError",
+    -7,
+    160
+   ],
+   "crema": [
+    "NoError",
+    2,
+    10572
+   ],
+   "verde_acqua": [
+    "NoError",
+    0,
+    143328
+   ],
+   "nero": [
+    "NoError",
+    -2,
+    40
+   ]
+  },
+  "unico_genus": 1
+ },
+ "pokeball_figura": {
+  "nome": "Pok\u00e9 Ball",
+  "ingombro": [
+   64,
+   66,
+   59
+  ],
+  "grammi": 76,
+  "colori": [
+   "bianco",
+   "nero",
+   "rosso"
+  ],
+  "status": {
+   "bianco": [
+    "NoError",
+    0,
+    56565
+   ],
+   "nero": [
+    "NoError",
+    2,
+    21182
+   ],
+   "rosso": [
+    "NoError",
+    0,
+    57806
+   ]
+  },
+  "unico_genus": 0
+ }
+}
